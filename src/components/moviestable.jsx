@@ -2,7 +2,7 @@ import React from 'react';
 
 import MovieRow from './movierow';
 
-const MoviesTable = ({ movies, handleDelete }) => {
+const MoviesTable = ({ movies, handleLike, handleDelete }) => {
   return (
     <table className="table">
       <thead>
@@ -11,6 +11,7 @@ const MoviesTable = ({ movies, handleDelete }) => {
           <th>Genre</th>
           <th>Stock</th>
           <th>Rate</th>
+          <th>Liked</th>
           <th> </th>
         </tr>
       </thead>
@@ -23,7 +24,9 @@ const MoviesTable = ({ movies, handleDelete }) => {
             genre={movie.genre.name}
             stock={movie.numberInStock}
             rate={movie.dailyRentalRate}
+            liked={movie.liked}
             handleDelete={handleDelete}
+            handleLike={() => handleLike(movie)}
           />
         ))}
       </tbody>

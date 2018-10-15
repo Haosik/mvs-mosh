@@ -5,7 +5,11 @@ import './App.css';
 
 class App extends Component {
   render() {
-    return <MoviesInDB />;
+    return (
+      <div className="container">
+        <MoviesInDB />
+      </div>
+    );
   }
 }
 
