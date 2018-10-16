@@ -1,8 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Pagination = ({ pagesTotal, currentPage, onPageChange }) => {
+const Pagination = ({ itemsTotal, perPage, currentPage, onPageChange }) => {
+  const pagesTotal = Math.ceil(itemsTotal / perPage);
   const pages = _.range(1, pagesTotal + 1);
+
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination">

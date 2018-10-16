@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
+import { paginate } from '../utils/paginate';
 
 import MoviesTable from './moviestable';
 import Pagination from './common/pagination';
@@ -8,7 +9,6 @@ class MoviesInDB extends Component {
   state = {
     movies: [],
     perPage: 4,
-    pagesTotal: 1,
     currentPage: 1
   };
   handleDelete = id => {
@@ -28,37 +28,36 @@ class MoviesInDB extends Component {
   handlePageChange = page => {
     if (page !== this.state.currentPage) {
       this.setState({
-        currentPage: page
+        currentPage: page,
       });
     }
   };
   componentDidMount = () => {
-    this.setState({ movies: getMovies() }, () => {
-      this.setState({
-        pagesTotal: Math.ceil(this.state.movies.length / this.state.perPage)
-      });
-    });
+    this.setState(
+      {
+        movies: getMovies()
+      }
+    );
   };
   render() {
-    let { movies, pagesTotal, currentPage } = this.state;
-    console.log('Pages total', this.state.pagesTotal);
+    let { movies: allMovies, currentPage, perPage } = this.state;
+    const movies = paginate(allMovies, currentPage, perPage);
     return (
       <>
-        {movies.length ? (
+        {allMovies.length ? (
           <>
-            <h3>Showing {movies.length} movies in the database.</h3>
+            <h3>Showing {allMovies.length} movies in the database.</h3>
             <MoviesTable
               movies={movies}
               handleDelete={this.handleDelete}
               handleLike={this.handleLike}
             />
-            {pagesTotal > 1 && (
-              <Pagination
-                onPageChange={this.handlePageChange}
-                pagesTotal={pagesTotal}
-                currentPage={currentPage}
-              />
-            )}
+            <Pagination
+              itemsTotal={allMovies.length}
+              onPageChange={this.handlePageChange}
+              perPage={perPage}
+              currentPage={currentPage}
+            />
           </>
         ) : (
           <h4>There are no movies in the database</h4>
