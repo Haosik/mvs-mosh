@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import { paginate } from '../utils/paginate';
+import { getGenres } from '../services/fakeGenreService';
 
 import MoviesTable from './moviestable';
 import Pagination from './common/pagination';
+import Filter from './common/filter';
 
 class MoviesInDB extends Component {
   state = {
     movies: [],
     perPage: 4,
-    currentPage: 1
+    currentPage: 1,
+    currentGanre: ''
   };
   handleDelete = id => {
     const { movies } = this.state;
@@ -28,37 +31,43 @@ class MoviesInDB extends Component {
   handlePageChange = page => {
     if (page !== this.state.currentPage) {
       this.setState({
-        currentPage: page,
+        currentPage: page
       });
     }
   };
+  handleGenreChange = id => {
+    console.log(id);
+    console.log(getGenres());
+  };
   componentDidMount = () => {
-    this.setState(
-      {
-        movies: getMovies()
-      }
-    );
+    this.setState({
+      movies: getMovies(),
+      genres: getGenres()
+    });
   };
   render() {
-    let { movies: allMovies, currentPage, perPage } = this.state;
+    const { movies: allMovies, genres, currentPage, perPage } = this.state;
     const movies = paginate(allMovies, currentPage, perPage);
     return (
       <>
         {allMovies.length ? (
-          <>
-            <h3>Showing {allMovies.length} movies in the database.</h3>
-            <MoviesTable
-              movies={movies}
-              handleDelete={this.handleDelete}
-              handleLike={this.handleLike}
-            />
-            <Pagination
-              itemsTotal={allMovies.length}
-              onPageChange={this.handlePageChange}
-              perPage={perPage}
-              currentPage={currentPage}
-            />
-          </>
+          <div className="row">
+            <Filter items={genres} onFilterChange={this.handleGenreChange} />
+            <div className="col-sm-10">
+              <h3>Showing {allMovies.length} movies in the database.</h3>
+              <MoviesTable
+                movies={movies}
+                handleDelete={this.handleDelete}
+                handleLike={this.handleLike}
+              />
+              <Pagination
+                itemsTotal={allMovies.length}
+                onPageChange={this.handlePageChange}
+                perPage={perPage}
+                currentPage={currentPage}
+              />
+            </div>
+          </div>
         ) : (
           <h4>There are no movies in the database</h4>
         )}
