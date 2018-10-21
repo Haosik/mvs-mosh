@@ -12,11 +12,9 @@ const ListGroup = ({ items, nameProperty, valueProperty, onItemSelect, currentPr
       </button> */}
       {items.map((item, ind) => (
         <button
-          key={item[nameProperty]}
+          key={item[valueProperty]}
           onClick={() => onItemSelect(item)}
-          className={`list-group-item list-group-item-action ${
-            item === currentProperty ? 'active' : ''
-          }`}
+          className={`list-group-item list-group-item-action ${item === currentProperty ? 'active' : ''}`}
         >
           {item[nameProperty]}
         </button>
