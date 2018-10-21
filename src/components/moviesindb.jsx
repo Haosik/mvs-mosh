@@ -5,8 +5,7 @@ import { getGenres } from '../services/fakeGenreService';
 
 import MoviesTable from './moviestable';
 import Pagination from './common/pagination';
-import Filter from './common/filter';
-import filterByGenre from '../utils/filterByGenre';
+import ListGroup from './common/ListGroup';
 
 class MoviesInDB extends Component {
   state = {
@@ -14,7 +13,7 @@ class MoviesInDB extends Component {
     genres: [],
     perPage: 4,
     currentPage: 1,
-    currentGenre: ''
+    currentGenre: {}
   };
   handleDelete = id => {
     const { movies } = this.state;
@@ -36,37 +35,35 @@ class MoviesInDB extends Component {
     }
   };
   handleGenreChange = genre => {
-    this.handlePageChange(1);
-    if (!genre) {
-      this.setState({
-        currentGenre: ''
-      });
-      return;
-    }
-    const currentFilter = this.state.genres.find(elem => elem === genre);
-    const currentGenre = currentFilter.name;
     this.setState({
-      currentGenre
+      currentGenre: genre,
+      currentPage: 1
     });
   };
   componentDidMount = () => {
+    const genres = [{ name: 'All Genres' }, ...getGenres()];
+
     this.setState({
       movies: getMovies(),
-      genres: getGenres()
+      genres
     });
   };
   render() {
     const { movies: allMovies, genres, currentGenre, currentPage, perPage } = this.state;
-    const filteredMovies = filterByGenre(allMovies, currentGenre);
+
+    const filteredMovies =
+      currentGenre && currentGenre._id
+        ? allMovies.filter(movie => movie.genre._id === currentGenre._id)
+        : allMovies;
     const movies = paginate(filteredMovies, currentPage, perPage);
     return (
       <>
         {allMovies.length ? (
           <div className="row">
             <div className="col-sm-2">
-              <Filter
+              <ListGroup
                 items={genres}
-                onFilterChange={this.handleGenreChange}
+                onItemSelect={this.handleGenreChange}
                 currentProperty={currentGenre}
               />
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Like from './common/like';
 
-const MovieRow = ({ id, title, genre, stock, rate, liked, handleDelete, handleLike }) => {
+const MovieRow = ({ id, title, genre, stock, rate, liked, onDelete, onLike }) => {
   return (
     <tr>
       <td>{title}</td>
@@ -10,10 +10,10 @@ const MovieRow = ({ id, title, genre, stock, rate, liked, handleDelete, handleLi
       <td>{stock}</td>
       <td>{rate}</td>
       <td>
-        <Like liked={liked} onLike={handleLike} />
+        <Like liked={liked} onLike={onLike} />
       </td>
       <td>
-        <button type="button" onClick={() => handleDelete(id)} className="btn btn-danger">
+        <button type="button" onClick={() => onDelete(id)} className="btn btn-danger">
           Delete
         </button>
       </td>

@@ -25,8 +25,8 @@ const MoviesTable = ({ movies, handleLike, handleDelete }) => {
             stock={movie.numberInStock}
             rate={movie.dailyRentalRate}
             liked={movie.liked}
-            handleDelete={handleDelete}
-            handleLike={() => handleLike(movie)}
+            onDelete={handleDelete}
+            onLike={() => handleLike(movie)}
           />
         ))}
       </tbody>

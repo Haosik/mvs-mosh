@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Filter = ({ items, nameProperty, valueProperty, onFilterChange, currentProperty }) => {
+const ListGroup = ({ items, nameProperty, valueProperty, onItemSelect, currentProperty }) => {
   return (
     <div className="list-group">
-      <button
-        onClick={() => onFilterChange('')}
+      {/* <button
+        onClick={() => onItemSelect('')}
         className={`list-group-item list-group-item-action ${currentProperty ? '' : 'active'}`}
       >
         All genres
-      </button>
-      {items.map(item => (
+      </button> */}
+      {items.map((item, ind) => (
         <button
-          key={item[valueProperty]}
-          onClick={() => onFilterChange(item)}
+          key={item[nameProperty]}
+          onClick={() => onItemSelect(item)}
           className={`list-group-item list-group-item-action ${
-            item[nameProperty] === currentProperty ? 'active' : ''
+            item === currentProperty ? 'active' : ''
           }`}
         >
           {item[nameProperty]}
@@ -25,15 +25,14 @@ const Filter = ({ items, nameProperty, valueProperty, onFilterChange, currentPro
   );
 };
 
-Filter.defaultProps = {
+ListGroup.defaultProps = {
   nameProperty: 'name',
   valueProperty: '_id'
 };
 
-Filter.propTypes = {
+ListGroup.propTypes = {
   items: PropTypes.array.isRequired,
-  onFilterChange: PropTypes.func.isRequired,
-  currentActive: PropTypes.string
+  onItemSelect: PropTypes.func.isRequired
 };
 
-export default Filter;
+export default ListGroup;
