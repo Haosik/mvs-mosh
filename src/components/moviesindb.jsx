@@ -16,10 +16,9 @@ class MoviesInDB extends Component {
     currentPage: 1,
     sortColumn: { path: 'title', order: 'asc' }
   };
-  handleDelete = id => {
-    const { movies } = this.state;
-    const newMovies = [...movies].filter(newMovie => newMovie._id !== id);
-    this.setState({ movies: newMovies });
+  handleDelete = movie => {
+    const movies = [...this.state.movies].filter(newMovie => newMovie !== movie);
+    this.setState({ movies });
   };
   handleLike = movie => {
     const movies = [...this.state.movies];
