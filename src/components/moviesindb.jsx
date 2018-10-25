@@ -45,6 +45,14 @@ class MoviesInDB extends Component {
       currentPage: 1
     });
   };
+  getPagedData = allMovies => {
+    const { currentGenre, currentPage, perPage, sortColumn } = this.state;
+    const filteredMovies =
+      currentGenre && currentGenre._id ? allMovies.filter(movie => movie.genre._id === currentGenre._id) : allMovies;
+    const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
+    const movies = paginate(sortedMovies, currentPage, perPage);
+    return { data: movies, totalCount: filteredMovies.length };
+  };
   componentDidMount = () => {
     const genres = [{ _id: '', name: 'All Genres' }, ...getGenres()];
 
@@ -54,11 +62,10 @@ class MoviesInDB extends Component {
     });
   };
   render() {
-    const { movies: allMovies, genres, currentGenre, currentPage, perPage, sortColumn } = this.state;
-    const filteredMovies =
-      currentGenre && currentGenre._id ? allMovies.filter(movie => movie.genre._id === currentGenre._id) : allMovies;
-    const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
-    const movies = paginate(sortedMovies, currentPage, perPage);
+    const { movies: allMovies, genres, currentGenre, sortColumn, perPage, currentPage } = this.state;
+    
+    const { data: movies, totalCount } = this.getPagedData(allMovies);
+
     return (
       <>
         {allMovies.length ? (
@@ -67,7 +74,7 @@ class MoviesInDB extends Component {
               <ListGroup items={genres} onItemSelect={this.handleGenreChange} currentProperty={currentGenre} />
             </div>
             <div className="col">
-              <h3>Showing {filteredMovies.length} movies in the database.</h3>
+              <h3>Showing {totalCount} movies in the database.</h3>
               <MoviesTable
                 movies={movies}
                 onDelete={this.handleDelete}
@@ -76,7 +83,7 @@ class MoviesInDB extends Component {
                 sortColumn={sortColumn}
               />
               <Pagination
-                itemsTotal={filteredMovies.length}
+                itemsTotal={totalCount}
                 onPageChange={this.handlePageChange}
                 perPage={perPage}
                 currentPage={currentPage}

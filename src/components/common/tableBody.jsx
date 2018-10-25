@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 // data: array
 // columns: array
-// onLike: func
-// onDelete: func
 
 class TableBody extends Component {
   renderCell = (item, column) => (column.content ? column.content(item) : _.get(item, column.path));
@@ -26,5 +25,10 @@ class TableBody extends Component {
     );
   }
 }
+
+TableBody.propTypes = {
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired
+};
 
 export default TableBody;
