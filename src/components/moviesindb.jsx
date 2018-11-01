@@ -63,11 +63,11 @@ class MoviesInDB extends Component {
   };
   render() {
     const { movies: allMovies, genres, currentGenre, sortColumn, perPage, currentPage } = this.state;
-    
+
     const { data: movies, totalCount } = this.getPagedData(allMovies);
 
     return (
-      <>
+      <div className="container">
         {allMovies.length ? (
           <div className="row">
             <div className="col-sm-2">
@@ -93,7 +93,7 @@ class MoviesInDB extends Component {
         ) : (
           <h4>There are no movies in the database</h4>
         )}
-      </>
+      </div>
     );
   }
 }

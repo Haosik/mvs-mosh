@@ -1,13 +1,28 @@
 import React, { Component } from 'react';
-import MoviesInDB from './components/moviesindb';
-
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
+
+import Navbar from './components/navbar';
+import MoviesInDB from './components/moviesindb';
+import Customers from './components/customers';
+import Rentals from './components/rentals';
+import NotFound from './components/notFound';
+import MovieForm from './components/movieForm';
 
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <MoviesInDB />
+      <div className="vidly">
+        <Navbar />
+        <Switch>
+          <Route path="/movies/:_id" component={MovieForm} />
+          <Route path="/movies" component={MoviesInDB} />
+          <Route path="/customers" component={Customers} />
+          <Route path="/rentals" component={Rentals} />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect from="/" exact to="/movies" />
+          <Redirect to="/not-found" />
+        </Switch>
       </div>
     );
   }
