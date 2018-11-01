@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import './App.css';
 
 import Navbar from './components/navbar';
 import MoviesInDB from './components/moviesindb';
@@ -8,6 +7,8 @@ import Customers from './components/customers';
 import Rentals from './components/rentals';
 import NotFound from './components/notFound';
 import MovieForm from './components/movieForm';
+
+import './App.css';
 
 class App extends Component {
   render() {
