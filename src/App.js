@@ -16,7 +16,7 @@ class App extends Component {
       <div className="vidly">
         <Navbar />
         <Switch>
-          <Route path="/movies/:_id" component={MovieForm} />
+          <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={MoviesInDB} />
           <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} />
