@@ -28,6 +28,11 @@ class Navbar extends Component {
 	                  Rentals
 	                </NavLink>
 	              </li>
+	              <li>
+	                <NavLink to="/Login" className="nav-item nav-link" activeClassName="active">
+	                  Login
+	                </NavLink>
+	              </li>
 	            </ul>
 	          </nav>
         </div>
