@@ -39,11 +39,12 @@ class LoginForm extends Component {
 
     return errors;
   };
+
   validateProperty = ({ name, value }) => {
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
-    return error ? error.message : null;
+    return error ? error.details[0].message : null;
   };
 
   handleInputChange = ({ currentTarget: input }) => {
@@ -59,6 +60,7 @@ class LoginForm extends Component {
     account[input.name] = input.value;
     this.setState({ account, errors });
   };
+
   handleSubmit = e => {
     e.preventDefault();
 
@@ -91,7 +93,7 @@ class LoginForm extends Component {
             type="password"
             error={errors.password}
           />
-          <button disabled={false} className="btn btn-primary">
+          <button disabled={this.validate()} className="btn btn-primary">
             Login
           </button>
           {/* <div class="form-group">
