@@ -41,7 +41,9 @@ class LoginForm extends Component {
   };
 
   validateProperty = ({ name, value }) => {
+    // Received name and value of changed input
     const obj = { [name]: value };
+    // Validate against specific field from global schema
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
     return error ? error.details[0].message : null;
@@ -49,13 +51,17 @@ class LoginForm extends Component {
 
   handleInputChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
+
     const errorMessage = this.validateProperty(input);
+
+    // On every input change setState with new errors object
     if (errorMessage) {
       errors[input.name] = errorMessage;
     } else {
       delete errors[input.name];
     }
 
+    // On every input change setState with new account object
     const account = { ...this.state.account };
     account[input.name] = input.value;
     this.setState({ account, errors });
@@ -65,6 +71,8 @@ class LoginForm extends Component {
     e.preventDefault();
 
     const errors = this.validate();
+
+    // Prevent null to be setStated as error object
     this.setState({ errors: errors || {} });
     if (errors) return;
 
