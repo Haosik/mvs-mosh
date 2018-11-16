@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
 
+import Form from '../common/form';
 import Input from './input';
 
 class LoginForm extends Component {
   state = {
-    account: {
+    data: {
       username: '',
       password: ''
     },
@@ -24,31 +25,6 @@ class LoginForm extends Component {
       .label('Password')
   };
 
-  validate = () => {
-    const options = { abortEarly: false };
-    const { error } = Joi.validate(this.state.account, this.schema, options);
-
-    if (!error) return null;
-
-    const errors = {};
-
-    const { details } = error;
-    details.forEach(item => {
-      errors[item.path[0]] = item.message;
-    });
-
-    return errors;
-  };
-
-  validateProperty = ({ name, value }) => {
-    // Received name and value of changed input
-    const obj = { [name]: value };
-    // Validate against specific field from global schema
-    const schema = { [name]: this.schema[name] };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
   handleInputChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
 
@@ -61,10 +37,10 @@ class LoginForm extends Component {
       delete errors[input.name];
     }
 
-    // On every input change setState with new account object
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({ account, errors });
+    // On every input change setState with new data object
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+    this.setState({ data, errors });
   };
 
   handleSubmit = e => {
@@ -80,13 +56,16 @@ class LoginForm extends Component {
   };
 
   render() {
-    const { account, errors } = this.state;
+    const { data, errors } = this.state;
 
     return (
       <div className="container">
+        <Form>
+          <Input value="123" />
+        </Form>
         <form onSubmit={this.handleSubmit}>
           <Input
-            value={account.username}
+            value={data.username}
             onChange={this.handleInputChange}
             name="username"
             label="Username"
@@ -94,7 +73,7 @@ class LoginForm extends Component {
             error={errors.username}
           />
           <Input
-            value={account.password}
+            value={data.password}
             onChange={this.handleInputChange}
             name="password"
             label="Password"
