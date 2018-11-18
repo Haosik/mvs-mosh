@@ -1,5 +1,6 @@
+import Joi from 'joi-browser';
 import React, { Component } from 'react';
-import { Joi } from 'joi-browser';
+import Input from './input';
 
 class Form extends Component {
   state = {
@@ -32,8 +33,56 @@ class Form extends Component {
     return error ? error.details[0].message : null;
   };
 
-  render() {
-    return <h1>Form</h1>;
+  handleInputChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+
+    const errorMessage = this.validateProperty(input);
+
+    // On every input change setState with new errors object
+    if (errorMessage) {
+      errors[input.name] = errorMessage;
+    } else {
+      delete errors[input.name];
+    }
+
+    // On every input change setState with new data object
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+    this.setState({ data, errors });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    const errors = this.validate();
+
+    // Prevent null to be setStated as error object
+    this.setState({ errors: errors || {} });
+    if (errors) return;
+
+    this.doSubmit();
+  };
+
+  renderSubmitBtn(label) {
+    return (
+      <button disabled={this.validate()} className="btn btn-primary">
+        {label}
+      </button>
+    );
+  }
+
+  renderInput(property, label, type = 'text') {
+    const { data, errors } = this.state;
+    return (
+      <Input
+        value={data[property]}
+        onChange={this.handleInputChange}
+        name={property}
+        label={label}
+        type={type}
+        error={errors[property]}
+      />
+    );
   }
 }
 

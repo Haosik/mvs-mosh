@@ -7,36 +7,40 @@ class Navbar extends Component {
     return (
       <div className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-        	<Link className="navbar-brand" to="/">
-	          <h3>Vidly</h3>
-	        </Link>
-	
-	          <nav className="collapse navbar-collapse">
-	            <ul className="navbar-nav mr-auto">
-	              <li>
-	                <NavLink exact to="/movies" className="nav-item nav-link" activeClassName="active">
-	                  Movies
-	                </NavLink>
-	              </li>
-	              <li>
-	                <NavLink to="/customers" className="nav-item nav-link" activeClassName="active">
-	                  Customers
-	                </NavLink>
-	              </li>
-	              <li>
-	                <NavLink to="/rentals" className="nav-item nav-link" activeClassName="active">
-	                  Rentals
-	                </NavLink>
-	              </li>
-	              <li>
-	                <NavLink to="/Login" className="nav-item nav-link" activeClassName="active">
-	                  Login
-	                </NavLink>
-	              </li>
-	            </ul>
-	          </nav>
-        </div>
+          <Link className="navbar-brand" to="/">
+            <h3>Vidly</h3>
+          </Link>
 
+          <nav className="collapse navbar-collapse">
+            <ul className="navbar-nav mr-auto">
+              <li>
+                <NavLink exact to="/movies" className="nav-item nav-link" activeClassName="active">
+                  Movies
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/customers" className="nav-item nav-link" activeClassName="active">
+                  Customers
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/rentals" className="nav-item nav-link" activeClassName="active">
+                  Rentals
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/login" className="nav-item nav-link" activeClassName="active">
+                  Login
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/register" className="nav-item nav-link" activeClassName="active">
+                  Register
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     );
   }

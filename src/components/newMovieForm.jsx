@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MovieForm = ({ match, history }) => {
+const NewMovieForm = ({ match, history }) => {
   return (
     <div className="container">
       <h1>Movie Form {match.params.id}</h1>
@@ -11,4 +11,4 @@ const MovieForm = ({ match, history }) => {
   );
 };
 
-export default MovieForm;
+export default NewMovieForm;
