@@ -27,6 +27,10 @@ class MoviesInDB extends Component {
     movies[index].liked = !movies[index].liked;
     this.setState({ movies });
   };
+  handleNewMovie = () => {
+    const { history } = this.props;
+    history.push('/movies/new');
+  };
   handleSort = sortColumn => {
     this.setState({
       sortColumn
@@ -54,11 +58,13 @@ class MoviesInDB extends Component {
     return { data: movies, totalCount: filteredMovies.length };
   };
   componentDidMount = () => {
-    const genres = [{ _id: '', name: 'All Genres' }, ...getGenres()];
+    const defaultGenre = { _id: '', name: 'All Genres' };
+    const genres = [defaultGenre, ...getGenres()];
 
     this.setState({
       movies: getMovies(),
-      genres
+      genres,
+      currentGenre: defaultGenre
     });
   };
   render() {
@@ -74,7 +80,10 @@ class MoviesInDB extends Component {
               <ListGroup items={genres} onItemSelect={this.handleGenreChange} currentProperty={currentGenre} />
             </div>
             <div className="col">
-              <h3>Showing {totalCount} movies in the database.</h3>
+              <button onClick={this.handleNewMovie} className="btn btn-primary btn-lg mb-3">
+                New Movie
+              </button>
+              <h4>Showing {totalCount} movies in the database.</h4>
               <MoviesTable
                 movies={movies}
                 onDelete={this.handleDelete}
