@@ -1,6 +1,6 @@
 import React from 'react';
 import Joi from 'joi-browser';
-import { getGenres } from '../services/fakeGenreService';
+import { getGenres, getGenreById } from '../services/fakeGenreService';
 import { saveMovie } from '../services/fakeMovieService';
 
 import Form from './common/form';
@@ -9,13 +9,13 @@ class NewMovieForm extends Form {
   state = {
     data: {
       title: '',
-      genre: { _id: '', name: '' },
+      genre: '',
       numberInStock: '',
       dailyRentalRate: ''
     },
     errors: {
       title: '',
-      genre: { _id: '', name: '' },
+      genre: '',
       numberInStock: '',
       dailyRentalRate: ''
     }
@@ -23,7 +23,7 @@ class NewMovieForm extends Form {
 
   schema = {
     title: Joi.string().required(),
-    genre: { _id: Joi.number().required(), name: Joi.string().required() },
+    genre: Joi.string().required(),
     numberInStock: Joi.number()
       .min(0)
       .max(100),
@@ -32,31 +32,38 @@ class NewMovieForm extends Form {
       .max(10)
   };
 
-  doSubmit = () => {
+  doSubmit() {
     const { title, genre, numberInStock, dailyRentalRate } = this.state.data;
+    const genreName = getGenreById(genre).name;
     const newMovie = {
+      _id: new Date(),
       title,
-      genre,
+      genre: { _id: genre, name: genreName },
       numberInStock,
       dailyRentalRate
     };
+    console.log(321);
     saveMovie(newMovie);
+
+    console.log(123);
 
     const { history } = this.props;
     history.push('/movies');
-  };
+  }
 
   render() {
     const genresOptions = getGenres();
-    const genresProperties = { value: '_id', title: 'name'};
+    const genresProperties = { value: '_id', title: 'name' };
     return (
       <div className="container">
         <h1>New Movie Form</h1>
-        {this.renderInput('title', 'Title')}
-        {this.renderSelect('genre', 'Genre', genresOptions, genresProperties)}
-        {this.renderInput('numberInStock', 'Number in Stock')}
-        {this.renderInput('dailyRentalRate', 'Rate')}
-        {this.renderSubmitBtn('Save')}
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput('title', 'Title')}
+          {this.renderSelect('genre', 'Genre', genresOptions, genresProperties)}
+          {this.renderInput('numberInStock', 'Number in Stock', 'number')}
+          {this.renderInput('dailyRentalRate', 'Rate', 'number')}
+          {this.renderSubmitBtn('Save')}
+        </form>
       </div>
     );
   }

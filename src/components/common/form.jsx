@@ -61,6 +61,7 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
 
+    console.log('Should do submit')
     this.doSubmit();
   };
 
@@ -86,7 +87,7 @@ class Form extends Component {
     );
   }
 
-  renderSelect(property, label, options, genresProperties) {
+  renderSelect(property, label, options, optionsProperties) {
     const { data, errors } = this.state;
     return (
       <Select
@@ -97,7 +98,7 @@ class Form extends Component {
         id={property}
         error={errors[property]}
         options={options}
-        genresProperties={genresProperties}
+        optionsProperties={optionsProperties}
       />
     );
   }

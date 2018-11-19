@@ -23,9 +23,9 @@ class EditMovieForm extends Form {
     return (
       <div className="container">
         <h1>Movie Form {match.params.id}</h1>
-        <button onClick={() => history.push('/movies')} className="btn btn-primary">
-          Save
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          <h3>haha</h3>
+        </form>
       </div>
     );
   }
