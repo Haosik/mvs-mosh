@@ -1,7 +1,7 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import { getGenres, getGenreById } from '../services/fakeGenreService';
-import { saveMovie } from '../services/fakeMovieService';
+import { getMovies, saveMovie } from '../services/fakeMovieService';
 
 import Form from './common/form';
 
@@ -36,16 +36,15 @@ class NewMovieForm extends Form {
     const { title, genre, numberInStock, dailyRentalRate } = this.state.data;
     const genreName = getGenreById(genre).name;
     const newMovie = {
-      _id: new Date(),
       title,
       genre: { _id: genre, name: genreName },
-      numberInStock,
-      dailyRentalRate
+      numberInStock: +numberInStock,
+      dailyRentalRate: +dailyRentalRate
     };
-    console.log(321);
+
     saveMovie(newMovie);
 
-    console.log(123);
+    console.log(getMovies());
 
     const { history } = this.props;
     history.push('/movies');
