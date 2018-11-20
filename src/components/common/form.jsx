@@ -61,7 +61,7 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    console.log('Should do submit')
+    console.log('Should do submit');
     this.doSubmit();
   };
 

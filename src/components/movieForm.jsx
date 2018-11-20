@@ -1,11 +1,11 @@
 import React from 'react';
 import Joi from 'joi-browser';
-import { getGenres, getGenreById } from '../services/fakeGenreService';
-import { getMovies, saveMovie } from '../services/fakeMovieService';
+import { getGenres } from '../services/fakeGenreService';
+import { getMovie, getMovies, saveMovie } from '../services/fakeMovieService';
 
 import Form from './common/form';
 
-class NewMovieForm extends Form {
+class MovieForm extends Form {
   state = {
     data: {
       title: '',
@@ -18,7 +18,9 @@ class NewMovieForm extends Form {
       genre: '',
       numberInStock: '',
       dailyRentalRate: ''
-    }
+    },
+    id: '',
+    genres: []
   };
 
   schema = {
@@ -33,32 +35,48 @@ class NewMovieForm extends Form {
   };
 
   doSubmit() {
-    const { title, genre, numberInStock, dailyRentalRate } = this.state.data;
-    const genreName = getGenreById(genre).name;
+    const { id, title, genre, numberInStock, dailyRentalRate } = this.state.data;
+    const genreName = this.state.genres.filter(g => g._id === genre).name;
     const newMovie = {
+      id,
       title,
       genre: { _id: genre, name: genreName },
       numberInStock: +numberInStock,
       dailyRentalRate: +dailyRentalRate
     };
-
     saveMovie(newMovie);
-
-    console.log(getMovies());
 
     const { history } = this.props;
     history.push('/movies');
   }
 
+  componentDidMount() {
+    this.setState({ genres: getGenres() });
+
+    const { id } = this.props.match.params;
+    if (!id) return;
+
+    const { title, genre, numberInStock, dailyRentalRate } = getMovie(id);
+    this.setState({
+      data: {
+        id,
+        title,
+        genre,
+        numberInStock,
+        dailyRentalRate
+      }
+    });
+  }
+
   render() {
-    const genresOptions = getGenres();
+    const { id, genres } = this.state;
     const genresProperties = { value: '_id', title: 'name' };
     return (
       <div className="container">
-        <h1>New Movie Form</h1>
+        <h1>Movie Form {id}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput('title', 'Title')}
-          {this.renderSelect('genre', 'Genre', genresOptions, genresProperties)}
+          {this.renderSelect('genre', 'Genre', genres, genresProperties)}
           {this.renderInput('numberInStock', 'Number in Stock', 'number')}
           {this.renderInput('dailyRentalRate', 'Rate', 'number')}
           {this.renderSubmitBtn('Save')}
@@ -68,4 +86,4 @@ class NewMovieForm extends Form {
   }
 }
 
-export default NewMovieForm;
+export default MovieForm;
