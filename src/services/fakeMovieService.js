@@ -105,7 +105,6 @@ export function getMovie(id) {
 export function saveMovie(movie) {
   let movieInDb = movies.find(m => m._id === movie._id) || {};
   const index = movieInDb._id ? movies.indexOf(movieInDb) : null;
-  console.log(index);
   movieInDb.title = movie.title;
   movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genre._id);
   movieInDb.numberInStock = movie.numberInStock;
@@ -115,7 +114,6 @@ export function saveMovie(movie) {
     movieInDb._id = Date.now().toString();
     movies.push(movieInDb);
   } else {
-    console.log(index);
     movies.splice(index, 1, movieInDb)
   }
 
