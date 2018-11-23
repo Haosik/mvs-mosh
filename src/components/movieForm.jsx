@@ -19,71 +19,68 @@ class MovieForm extends Form {
       numberInStock: '',
       dailyRentalRate: ''
     },
-    id: '',
     genres: []
   };
 
   schema = {
     _id: Joi.string(),
-    title: Joi.string().required(),
-    genreId: Joi.string().required(),
+    title: Joi.string()
+      .required()
+      .label('Title'),
+    genreId: Joi.string()
+      .required()
+      .label('Genre'),
     numberInStock: Joi.number()
       .min(0)
-      .max(100),
+      .max(100)
+      .label('Number in stock'),
     dailyRentalRate: Joi.number()
       .min(0)
       .max(10)
+      .label('Daily Rental Rate')
   };
 
   doSubmit() {
-    const { _id, title, genreId, numberInStock, dailyRentalRate } = this.state.data;
-    const genreName = this.state.genres.filter(g => g._id === genreId).name;
-    const newMovie = {
-      _id,
-      title,
-      genre: { _id: genreId, name: genreName },
-      numberInStock: +numberInStock,
-      dailyRentalRate: +dailyRentalRate
-    };
-    saveMovie(newMovie);
+    saveMovie(this.state.data);
 
-    const { history } = this.props;
-    history.push('/movies');
+    this.props.history.push('/movies');
   }
 
   componentDidMount() {
-    const { history } = this.props;
     this.setState({ genres: getGenres() });
 
-    const { id } = this.props.match.params;
-    if (!id) return;
+    const { id: movieId } = this.props.match.params;
+    if (movieId === 'new') return;
 
-    if (!getMovie(id)) {
-      history.replace('/not-found');
-      return;
-    }
+    const movie = getMovie(movieId);
+    if (!movie) return this.props.history.replace('/not-found');
 
-    const { title, genre, numberInStock, dailyRentalRate } = getMovie(id);
-    this.setState({
+    this.setState(this.mapToViewModel(movie));
+  }
+
+  mapToViewModel = movie => {
+    const { _id, title, genre, numberInStock, dailyRentalRate } = movie;
+    return {
       data: {
-        _id: id,
+        _id,
         title,
         genreId: genre._id,
         numberInStock,
         dailyRentalRate
       }
-    });
-  }
+    };
+  };
 
   render() {
-    const { id, genres, data } = this.state;
+    const { genres } = this.state;
+    const { id: movieId } = this.props.match.params;
     const genresProperties = { value: '_id', title: 'name' };
     return (
       <div className="container">
-        <h1>Movie Form {id}</h1>
+        <h1>Movie Form {movieId}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput('title', 'Title')}
-          {this.renderSelect('genreId', 'Genre', genres, genresProperties, data.genreId)}
+          {this.renderSelect('genreId', 'Genre', genres, genresProperties)}
           {this.renderInput('numberInStock', 'Number in Stock', 'number')}
           {this.renderInput('dailyRentalRate', 'Rate', 'number')}
           {this.renderSubmitBtn('Save')}

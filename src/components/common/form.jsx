@@ -12,7 +12,6 @@ class Form extends Component {
   validate = () => {
     const options = { abortEarly: false };
     const { error } = Joi.validate(this.state.data, this.schema, options);
-    console.log(error)
     if (!error) return null;
 
     const errors = {};
@@ -87,18 +86,18 @@ class Form extends Component {
     );
   }
 
-  renderSelect(property, label, options, optionsProperties, value) {
+  renderSelect(name, label, options, optProps) {
     const { data, errors } = this.state;
+
     return (
       <Select
-        value={data[property]}
+        name={name}
+        value={data[name]}
         label={label}
-        onChange={this.handleInputChange}
-        name={property}
-        id={property}
-        error={errors[property]}
         options={options}
-        optionsProperties={optionsProperties}
+        onChange={this.handleInputChange}
+        error={errors[name]}
+        optProps={optProps}
       />
     );
   }

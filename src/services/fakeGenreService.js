@@ -9,5 +9,5 @@ export function getGenres() {
 }
 
 export function getGenreById(id) {
-  return genres.filter(g => g._id === id);
+  return genres.find(g => g._id === id);
 }
