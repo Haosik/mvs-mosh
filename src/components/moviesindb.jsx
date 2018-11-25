@@ -8,14 +8,17 @@ import _ from 'lodash';
 import MoviesTable from './moviestable';
 import Pagination from './common/pagination';
 import ListGroup from './common/ListGroup';
+import SearchBar from './searchBar';
 
 class MoviesInDB extends Component {
   state = {
     movies: [],
     genres: [],
+    currentGenre: null,
     perPage: 4,
     currentPage: 1,
-    sortColumn: { path: 'title', order: 'asc' }
+    sortColumn: { path: 'title', order: 'asc' },
+    searchQuery: ''
   };
   handleDelete = movie => {
     deleteMovie(movie._id);
@@ -41,16 +44,30 @@ class MoviesInDB extends Component {
       });
     }
   };
+  handleSearch = query => {
+    this.setState({
+      currentGenre: null,
+      currentPage: 1,
+      searchQuery: query
+    });
+  };
   handleGenreChange = genre => {
     this.setState({
       currentGenre: genre,
-      currentPage: 1
+      currentPage: 1,
+      searchQuery: ''
     });
   };
   getPagedData = allMovies => {
-    const { currentGenre, currentPage, perPage, sortColumn } = this.state;
-    const filteredMovies =
-      currentGenre && currentGenre._id ? allMovies.filter(movie => movie.genre._id === currentGenre._id) : allMovies;
+    const { currentGenre, currentPage, perPage, sortColumn, searchQuery } = this.state;
+
+    let filteredMovies = allMovies;
+    if (searchQuery) {
+      filteredMovies = allMovies.filter(m => m.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    } else if (currentGenre && currentGenre._id) {
+      filteredMovies = allMovies.filter(movie => movie.genre._id === currentGenre._id);
+    }
+
     const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sortedMovies, currentPage, perPage);
     return { data: movies, totalCount: filteredMovies.length };
@@ -82,6 +99,7 @@ class MoviesInDB extends Component {
                 New Movie
               </Link>
               <h4>Showing {totalCount} movies in the database.</h4>
+              <SearchBar data={allMovies} onSearch={this.handleSearch} value={this.state.searchQuery} />
               <MoviesTable
                 movies={movies}
                 onDelete={this.handleDelete}
