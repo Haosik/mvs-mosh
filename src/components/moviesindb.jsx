@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getMovies, deleteMovie } from '../services/fakeMovieService';
+import { getMovies, deleteMovie } from '../services/movieService';
 import { paginate } from '../utils/paginate';
-import { getGenres } from '../services/fakeGenreService';
+import { getGenres } from '../services/genreService';
 import _ from 'lodash';
 
 import MoviesTable from './moviestable';
@@ -72,16 +72,19 @@ class MoviesInDB extends Component {
     const movies = paginate(sortedMovies, currentPage, perPage);
     return { data: movies, totalCount: filteredMovies.length };
   };
-  componentDidMount = () => {
+  async componentDidMount() {
+    const moviesFromApi = await getMovies();
+    const genresFromApi = await getGenres();
     const defaultGenre = { _id: '', name: 'All Genres' };
-    const genres = [defaultGenre, ...getGenres()];
+    const genres = [defaultGenre, ...genresFromApi];
+
 
     this.setState({
-      movies: getMovies(),
+      movies: moviesFromApi,
       genres,
       currentGenre: defaultGenre
     });
-  };
+  }
   render() {
     const { movies: allMovies, genres, currentGenre, sortColumn, perPage, currentPage } = this.state;
 
