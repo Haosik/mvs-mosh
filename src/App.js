@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Navbar from './components/navbar';
 import MoviesInDB from './components/moviesindb';
@@ -10,12 +11,14 @@ import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
 import RegistrationForm from './components/registrationForm';
 
+import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="vidly">
+        <ToastContainer />
         <Navbar />
         <Switch>
           <Route path="/login" component={LoginForm} />

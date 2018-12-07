@@ -2,28 +2,23 @@ import http from './httpService';
 
 const apiEndpoint = 'http://localhost:3900/api/movies';
 
-export const getMovies = async () => {
-  const { data: movies } = await http.get(apiEndpoint);
-  return movies;
+export const getMovies = () => {
+  return http.get(apiEndpoint);
 };
 
-export const getMovie = async id => {
-  const { data: movie } = await http.get(`${apiEndpoint}/${id}`);
-  return movie;
+export const getMovie = id => {
+  return http.get(`${apiEndpoint}/${id}`);
 };
 
-export const saveMovie = async movie => {
+export const saveMovie = movie => {
   if (movie._id) {
     const movieId = movie._id;
     delete movie._id;
-    const { data: updatedMovie } = await http.put(`${apiEndpoint}/${movieId}`, movie);
-    return updatedMovie;
+    return http.put(`${apiEndpoint}/${movieId}`, movie);
   }
-  const { data: savedMovie } = await http.post(apiEndpoint, movie);
-  return savedMovie;
+  return http.post(apiEndpoint, movie);
 };
 
-export const deleteMovie = async id => {
-  let movieInDb = await http.delete(`${apiEndpoint}/${id}`);
-  return movieInDb;
+export const deleteMovie = id => {
+  return http.delete(`${apiEndpoint}/${id}`);
 };

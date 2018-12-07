@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { getMovies, deleteMovie } from '../services/movieService';
 import { paginate } from '../utils/paginate';
 import { getGenres } from '../services/genreService';
@@ -20,10 +21,19 @@ class MoviesInDB extends Component {
     sortColumn: { path: 'title', order: 'asc' },
     searchQuery: ''
   };
-  handleDelete = movie => {
-    deleteMovie(movie._id);
-    const movies = [...this.state.movies].filter(newMovie => newMovie !== movie);
+  handleDelete = async movie => {
+    const initialMovies = [...this.state.movies];
+    const movies = initialMovies.filter(newMovie => newMovie !== movie);
     this.setState({ movies });
+    try {
+      await deleteMovie(movie._id);
+      // await deleteMovie(999);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        toast.warning('Movie is already deleted');
+      }
+      this.setState({ movies: initialMovies });
+    }
   };
   handleLike = movie => {
     const movies = [...this.state.movies];
@@ -73,14 +83,14 @@ class MoviesInDB extends Component {
     return { data: movies, totalCount: filteredMovies.length };
   };
   async componentDidMount() {
-    const moviesFromApi = await getMovies();
-    const genresFromApi = await getGenres();
+    const [{ data: movies }, { data: genresFromApi }] = await Promise.all([getMovies(), getGenres()]).catch(err =>
+      toast.error('Something went wrong')
+    );
     const defaultGenre = { _id: '', name: 'All Genres' };
     const genres = [defaultGenre, ...genresFromApi];
 
-
     this.setState({
-      movies: moviesFromApi,
+      movies,
       genres,
       currentGenre: defaultGenre
     });
