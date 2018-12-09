@@ -1,0 +1,5 @@
+{
+	"baseUrl": "http://localhost:3900/api",
+	"moviesUrl": "http://localhost:3900/api/movies",
+	"genresUrl": "http://localhost:3900/api/genres"
+}

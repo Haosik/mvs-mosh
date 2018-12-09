@@ -1,24 +1,23 @@
 import http from './httpService';
-
-const apiEndpoint = 'http://localhost:3900/api/movies';
+import { moviesUrl } from '../config.json';
 
 export const getMovies = () => {
-  return http.get(apiEndpoint);
+  return http.get(moviesUrl);
 };
 
 export const getMovie = id => {
-  return http.get(`${apiEndpoint}/${id}`);
+  return http.get(`${moviesUrl}/${id}`);
 };
 
 export const saveMovie = movie => {
   if (movie._id) {
     const movieId = movie._id;
     delete movie._id;
-    return http.put(`${apiEndpoint}/${movieId}`, movie);
+    return http.put(`${moviesUrl}/${movieId}`, movie);
   }
-  return http.post(apiEndpoint, movie);
+  return http.post(moviesUrl, movie);
 };
 
 export const deleteMovie = id => {
-  return http.delete(`${apiEndpoint}/${id}`);
+  return http.delete(`${moviesUrl}/${id}`);
 };
