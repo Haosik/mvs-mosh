@@ -46,26 +46,26 @@ class MovieForm extends Form {
     this.props.history.push('/movies');
   }
 
-  populateGenres = async () => {
+  async populateGenres() {
     const { data: genres } = await getGenres();
     this.setState({ genres });
-  };
+  }
 
-  populateMovies = async () => {
-    const movieId = this.props.match.params.id;
-    if (movieId === 'new') return;
-
+  async populateMovie() {
     try {
+      const movieId = this.props.match.params.id;
+      if (movieId === 'new') return;
+
       const { data: movie } = await getMovie(movieId);
       this.setState(this.mapToViewModel(movie));
     } catch (err) {
       if (err.response && err.response.status === 404) return this.props.history.replace('/not-found');
     }
-  };
+  }
 
-  componentDidMount() {
-    this.populateGenres();
-    this.populateMovies();
+  async componentDidMount() {
+    await this.populateGenres();
+    await this.populateMovie();
   }
 
   mapToViewModel = movie => {
