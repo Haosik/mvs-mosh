@@ -1,10 +1,10 @@
 import http from './httpService';
-import { genresUrl } from '../config.json';
+import { genresEndpoint } from '../config.json';
 
 export function getGenres() {
-  return http.get(genresUrl);
+  return http.get(genresEndpoint);
 }
 
 export function getGenreById(id) {
-  return http.get(`${genresUrl}/${id}`);
+  return http.get(`${genresEndpoint}/${id}`);
 }

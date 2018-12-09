@@ -40,11 +40,11 @@ class MovieForm extends Form {
       .label('Daily Rental Rate')
   };
 
-  async doSubmit() {
+  doSubmit = async () => {
     await saveMovie(this.state.data);
 
     this.props.history.push('/movies');
-  }
+  };
 
   async populateGenres() {
     const { data: genres } = await getGenres();

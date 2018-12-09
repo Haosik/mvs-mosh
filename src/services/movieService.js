@@ -1,23 +1,27 @@
 import http from './httpService';
-import { moviesUrl } from '../config.json';
+import { moviesEndpoint } from '../config.json';
+
+function movieUrl(id) {
+  return `${moviesEndpoint}/${id}`;
+}
 
 export const getMovies = () => {
-  return http.get(moviesUrl);
+  return http.get(moviesEndpoint);
 };
 
 export const getMovie = id => {
-  return http.get(`${moviesUrl}/${id}`);
+  return http.get(movieUrl(id));
 };
 
 export const saveMovie = movie => {
   if (movie._id) {
-    const movieId = movie._id;
-    delete movie._id;
-    return http.put(`${moviesUrl}/${movieId}`, movie);
+    const movieBody = { ...movie };
+    delete movieBody._id;
+    return http.put(movieUrl(movie._id), movieBody);
   }
-  return http.post(moviesUrl, movie);
+  return http.post(moviesEndpoint, movie);
 };
 
 export const deleteMovie = id => {
-  return http.delete(`${moviesUrl}/${id}`);
+  return http.delete(movieUrl(id));
 };
