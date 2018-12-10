@@ -1,5 +1,6 @@
 import React from 'react';
 import Joi from 'joi-browser';
+import * as userService from '../services/userService';
 
 import Form from './common/form';
 

@@ -1,5 +1,8 @@
 import React from 'react';
 import Joi from 'joi-browser';
+import { toast } from 'react-toastify';
+// Really we need only register method from userService
+import * as userService from '../services/userService';
 
 import Form from './common/form';
 
@@ -31,8 +34,20 @@ class RegistrationForm extends Form {
       .label('Name')
   };
 
-  doSubmit = () => {
-    console.log('Submitted');
+  doSubmit = async () => {
+    try {
+      const resp = await userService.register(this.state.data);
+      console.log(resp.headers['x-auth-token']);
+      toast('Congratulations! User registered!');
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        console.dir(err);
+        const errors = { ...this.state.errors };
+        errors.username = err.response.data;
+        this.setState({ errors });
+        toast(err.response.data);
+      }
+    }
   };
 
   render() {
