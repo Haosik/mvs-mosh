@@ -2,10 +2,16 @@ import http from './httpService';
 
 import { authEndpoint } from '../config.json';
 
-export const login = (email, password) => {
-  return http.post(authEndpoint, { email, password });
+export const login = async (email, password) => {
+  const { data: jwt } = await http.post(authEndpoint, { email, password });
+  localStorage.setItem('token', jwt);
 };
 
 export const logout = () => {
-  return http.post(authEndpoint);
+  localStorage.removeItem('token');
+};
+
+export default {
+  login,
+  logout
 };

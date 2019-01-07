@@ -37,8 +37,9 @@ class RegistrationForm extends Form {
   doSubmit = async () => {
     try {
       const resp = await userService.register(this.state.data);
-      console.log(resp.headers['x-auth-token']);
-      toast('Congratulations! User registered!');
+      localStorage.setItem('token', resp.headers['x-auth-token']);
+      window.location = '/';
+      // this.props.history.push('/');
     } catch (err) {
       if (err.response && err.response.status === 400) {
         console.dir(err);
