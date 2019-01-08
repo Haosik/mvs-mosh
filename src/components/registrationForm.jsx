@@ -3,6 +3,7 @@ import Joi from 'joi-browser';
 import { toast } from 'react-toastify';
 // Really we need only register method from userService
 import * as userService from '../services/userService';
+import auth from '../services/authService';
 
 import Form from './common/form';
 
@@ -37,7 +38,7 @@ class RegistrationForm extends Form {
   doSubmit = async () => {
     try {
       const resp = await userService.register(this.state.data);
-      localStorage.setItem('token', resp.headers['x-auth-token']);
+      auth.loginWithJwt(resp.headers['x-auth-token']);
       window.location = '/';
       // this.props.history.push('/');
     } catch (err) {
