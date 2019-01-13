@@ -12,14 +12,3 @@ export const register = user => {
 export const loginUser = () => {};
 
 export const deleteUser = () => {};
-
-export const searchRobotsReducer = (state = {}, action = {}) => {
-  switch (action.type) {
-    case 'CHANGE_USERFIELD':
-      return { ...state, userfield: action.payload };
-    case 'SOMETHING_ELSE':
-      return { ...state, something: action.payload };
-    default:
-      return state;
-  }
-};

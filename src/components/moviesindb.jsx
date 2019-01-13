@@ -95,10 +95,13 @@ class MoviesInDB extends Component {
       currentGenre: defaultGenre
     });
   }
+
   render() {
     const { movies: allMovies, genres, currentGenre, sortColumn, perPage, currentPage } = this.state;
 
     const { data: movies, totalCount } = this.getPagedData(allMovies);
+
+    const { user } = this.props;
 
     return (
       <div className="container">
@@ -108,9 +111,11 @@ class MoviesInDB extends Component {
               <ListGroup items={genres} onItemSelect={this.handleGenreChange} currentProperty={currentGenre} />
             </div>
             <div className="col">
-              <Link to="/movies/new" className="btn btn-primary btn-lg mb-3">
-                New Movie
-              </Link>
+              {user && (
+                <Link to="/movies/new" className="btn btn-primary btn-lg mb-3">
+                  New Movie
+                </Link>
+              )}
               <h4>Showing {totalCount} movies in the database.</h4>
               <SearchBar data={allMovies} onSearch={this.handleSearch} value={this.state.searchQuery} />
               <MoviesTable
