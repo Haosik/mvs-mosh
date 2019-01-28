@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { getMovies, deleteMovie } from '../services/movieService';
 import { paginate } from '../utils/paginate';
 import { getGenres } from '../services/genreService';
-import _ from 'lodash';
+import _orderBy from 'lodash/orderBy';
 
 import MoviesTable from './moviestable';
 import Pagination from './common/pagination';
@@ -78,7 +78,7 @@ class MoviesInDB extends Component {
       filteredMovies = allMovies.filter(movie => movie.genre._id === currentGenre._id);
     }
 
-    const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
+    const sortedMovies = _orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sortedMovies, currentPage, perPage);
     return { data: movies, totalCount: filteredMovies.length };
   };
@@ -124,6 +124,7 @@ class MoviesInDB extends Component {
                 onLike={this.handleLike}
                 onSort={this.handleSort}
                 sortColumn={sortColumn}
+                user={user}
               />
               <Pagination
                 itemsTotal={totalCount}

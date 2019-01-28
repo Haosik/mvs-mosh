@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Like from './common/like';
 import Table from './common/table';
 
-
 // this.columns: array
 
 class MoviesTable extends Component {
@@ -16,11 +15,12 @@ class MoviesTable extends Component {
     { key: 'like', content: movie => <Like liked={movie.liked} onLike={() => this.props.onLike(movie)} /> },
     {
       key: 'delete',
-      content: movie => (
-        <button onClick={() => this.props.onDelete(movie)} className="btn btn-danger btn-sm">
-          Delete
-        </button>
-      )
+      content: movie =>
+        this.props.user.isAdmin ? (
+          <button onClick={() => this.props.onDelete(movie)} className="btn btn-danger btn-sm">
+            Delete
+          </button>
+        ) : null
     }
   ];
   render() {

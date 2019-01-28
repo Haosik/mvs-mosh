@@ -51,16 +51,6 @@ class LoginForm extends Form {
           {this.renderInput('username', 'Username')}
           {this.renderInput('password', 'Password', 'password')}
           {this.renderSubmitBtn('Login')}
-          {/* <div class="form-group">
-            <label htmlFor="exampleFormControlSelect1">Example select</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-          </div> */}
         </form>
       </div>
     );
