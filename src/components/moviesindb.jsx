@@ -21,13 +21,13 @@ class MoviesInDB extends Component {
     sortColumn: { path: 'title', order: 'asc' },
     searchQuery: ''
   };
+
   handleDelete = async movie => {
     const initialMovies = [...this.state.movies];
     const movies = initialMovies.filter(newMovie => newMovie !== movie);
     this.setState({ movies });
     try {
       await deleteMovie(movie._id);
-      // await deleteMovie(999);
     } catch (err) {
       if (err.response && err.response.status === 404) {
         toast.warning('Movie is already deleted');
@@ -35,6 +35,7 @@ class MoviesInDB extends Component {
       this.setState({ movies: initialMovies });
     }
   };
+
   handleLike = movie => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
@@ -42,11 +43,13 @@ class MoviesInDB extends Component {
     movies[index].liked = !movies[index].liked;
     this.setState({ movies });
   };
+
   handleSort = sortColumn => {
     this.setState({
       sortColumn
     });
   };
+
   handlePageChange = page => {
     if (page !== this.state.currentPage) {
       this.setState({
@@ -54,6 +57,7 @@ class MoviesInDB extends Component {
       });
     }
   };
+
   handleSearch = query => {
     this.setState({
       currentGenre: null,
@@ -61,6 +65,7 @@ class MoviesInDB extends Component {
       searchQuery: query
     });
   };
+
   handleGenreChange = genre => {
     this.setState({
       currentGenre: genre,
@@ -68,6 +73,7 @@ class MoviesInDB extends Component {
       searchQuery: ''
     });
   };
+
   getPagedData = allMovies => {
     const { currentGenre, currentPage, perPage, sortColumn, searchQuery } = this.state;
 
