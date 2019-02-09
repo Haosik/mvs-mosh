@@ -111,38 +111,34 @@ class MoviesInDB extends Component {
 
     return (
       <div className="container">
-        {allMovies.length ? (
-          <div className="row">
-            <div className="col-sm-2">
-              <ListGroup items={genres} onItemSelect={this.handleGenreChange} currentProperty={currentGenre} />
-            </div>
-            <div className="col">
-              {user && (
-                <Link to="/movies/new" className="btn btn-primary btn-lg mb-3">
-                  New Movie
-                </Link>
-              )}
-              <h4>Showing {totalCount} movies in the database.</h4>
-              <SearchBar data={allMovies} onSearch={this.handleSearch} value={this.state.searchQuery} />
-              <MoviesTable
-                movies={movies}
-                onDelete={this.handleDelete}
-                onLike={this.handleLike}
-                onSort={this.handleSort}
-                sortColumn={sortColumn}
-                user={user}
-              />
-              <Pagination
-                itemsTotal={totalCount}
-                onPageChange={this.handlePageChange}
-                perPage={perPage}
-                currentPage={currentPage}
-              />
-            </div>
+        <div className="row">
+          <div className="col-sm-2">
+            <ListGroup items={genres} onItemSelect={this.handleGenreChange} currentProperty={currentGenre} />
           </div>
-        ) : (
-          <h4>There are no movies in the database</h4>
-        )}
+          <div className="col">
+            {user && (
+              <Link to="/movies/new" className="btn btn-primary btn-lg mb-3">
+                New Movie
+              </Link>
+            )}
+            <h4>Showing {totalCount} movies in the database.</h4>
+            <SearchBar data={allMovies} onSearch={this.handleSearch} value={this.state.searchQuery} />
+            <MoviesTable
+              movies={movies}
+              onDelete={this.handleDelete}
+              onLike={this.handleLike}
+              onSort={this.handleSort}
+              sortColumn={sortColumn}
+              user={user}
+            />
+            <Pagination
+              itemsTotal={totalCount}
+              onPageChange={this.handlePageChange}
+              perPage={perPage}
+              currentPage={currentPage}
+            />
+          </div>
+        </div>
       </div>
     );
   }
