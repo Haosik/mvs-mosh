@@ -1,5 +1,5 @@
 import http from './httpService';
-import { moviesEndpoint } from '../config.json';
+const moviesEndpoint = '/movies';
 
 function movieUrl(id) {
   return `${moviesEndpoint}/${id}`;

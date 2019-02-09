@@ -1,5 +1,6 @@
 import http from './httpService';
-import { usersEndpoint } from '../config.json';
+
+const usersEndpoint = '/users';
 
 export const register = user => {
   return http.post(usersEndpoint, {
